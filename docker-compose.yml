@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  # ── Streamlit Dashboard ──────────────────────────────────────────────────
+  app:
+    build:
+      context: .
+      target: app
+    image: traffic-rl-v2-app
+    container_name: traffic_app
+    ports:
+      - "8501:8501"
+    volumes:
+      - model_data:/app/models
+    environment:
+      - API_URL=http://api:8000
+    depends_on:
+      - api
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── FastAPI Backend ──────────────────────────────────────────────────────
+  api:
+    build:
+      context: .
+      target: api
+    image: traffic-rl-v2-api
+    container_name: traffic_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - model_data:/app/models
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  model_data:

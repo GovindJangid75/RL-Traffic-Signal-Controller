@@ -1,0 +1,15 @@
+venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.env
+.git
+.gitignore
+node_modules
+*.log
+data
+*.csv
+*.mp4
+*.zip
+*.exe

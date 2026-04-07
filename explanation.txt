@@ -1,0 +1,54 @@
+# Project Explanation: Traffic RL v2 (Hinglish)
+
+## 🚦 Problem Statement (Hums kya solve kr re hain?)
+Traffic signals pe fixed timers (jaise 30 seconds wait) hamre cities me congestion create krte hain. Kabhi ek side bilkul khali hoti hai fir bhi signal red rhta hai. 
+Is project ka goal hai ek **AI Agent** bnana jo traffic ko dekh kr "real-time" me decide kre ki konsi lane ki light green honi chahiye, taaki:
+1. Gaadiyan jaldi clear hon (Waiting time kam ho).
+2. Emergency vehicles (Ambulance etc.) ko priority mile.
+3. Fuel waste aur emissions kam hon.
+
+---
+
+## 🏗️ Architecture (Kon kya kr rha hai?)
+
+### 1. `env/traffic_env.py` (The Environment)
+Ye hamara "Simulated World" hai. 
+- Isme 4 lanes hain (North, South, East, West).
+- Ye handle krta hai: 
+    - **Weather**: Barish ya tufan me gaadiyan dhire chalti hain.
+    - **Time of Day**: Subah aur sham ko "Rush Hour" hota hai.
+    - **Vehicle Types**: Bus aur truck slow hote hain, bike fast.
+- **State**: Agent ko batata hai ki har lane me kitni gaadiyan hain.
+- **Reward**: Agar AI gaadi clear krta hai to use Points milte hain (+ve reward). Agar traffic jam hota hai ya pollution badhta hai to points kat'te hain (-ve reward).
+
+### 2. `agent/q_learning.py` (Tabular AI)
+Ye ek "Basic Brain" hai jo ek **Q-Table** use krta hai. 
+- Ye table me likhta rhta hai ki "State A" me "Action B" lene se kitna fayda hua. 
+- Small scenarios ke liye ye bahut fast aur effective hai.
+
+### 3. `agent/dqn_agent.py` (Deep AI - DQN)
+Jab traffic bahut complex ho jata hai (continuous values), tab Q-Table chota pad jata hai. 
+- Isme ek **Neural Network** (Brain) hota hai.
+- Ye **PyTorch** use krta hai pattern seekhne ke liye.
+- Ye bade level ke traffic management ke liye perfect hai.
+
+### 4. `train.py` (The Coaching)
+Ye script agent ko environment me "hazaron bar" (episodes) practice krwati hai. Successive practice se AI smarter banta jata hai.
+
+### 5. `app.py` (Visual Dashboard)
+Ye user interface hai jo **Streamlit** pe bana hai. 
+- Isme aap live dekh skte ho ki AI kaise decision le rha hai.
+- Ek interactive **JS Canvas** hai jisme gaadiyan chalti hui dikhti hain.
+- Graphs dikhate hain ki AI vs Manual Timer me kitna difference hai.
+
+---
+
+## 🛠️ Kaise kaam kr rha hai? (Workflow)
+1. **Reset**: Environment start hota hai, kuch random gaadiyan lanes me aati hain.
+2. **Observe**: AI dekhta hai ki North/South me kitni gaadiyan hain.
+3. **Action**: AI decide krta hai "0" (NS Green) ya "1" (EW Green).
+4. **Reward**: Environment batata hai ki kitni gaadiyan clear hui aur AI ko reward data hai.
+5. **Learn**: AI apne brain (Q-Table ya NN) ko update krta hai taaki agli baar aur behtar decision le sake.
+6. **Repeat**: Ye loop 100-200 baar (steps) chalta hai har episode me.
+
+Summary: Hum Reinforcement Learning se traffic signals ko "Smart" bana rahe hain jo khud environment ke hisab se adapt ho sakein!
