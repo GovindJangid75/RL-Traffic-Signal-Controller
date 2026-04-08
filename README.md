@@ -1,3 +1,15 @@
+---
+title: Traffic AI
+emoji: 🚦
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
+<<<<<<< HEAD
+
 # 🚦 AI Traffic Control System — v2
 
 > **Full-stack Reinforcement Learning** traffic signal controller with DQN, real traffic patterns, weather simulation, FastAPI backend, and animated Streamlit dashboard.
@@ -6,19 +18,19 @@
 
 ## 🆕 What's New in v2
 
-| Feature | v1 | v2 |
-|---------|----|----|
-| RL Algorithm | Q-Learning only | Q-Learning + **DQN** |
-| State space | 256 discrete | Continuous (DQN) |
-| Vehicle types | Cars only | Car, bike, bus, truck |
-| Weather | ❌ | ☀️ 🌧️ 🌫️ ⛈️ |
-| Time patterns | ❌ | 24-hour rush hour curves |
-| Emergency vehicles | ❌ | ✅ Random events |
-| Training chart | Post-training only | **Live real-time** |
-| Intersection | Static matplotlib | **Animated JS canvas** |
-| Comparison | ❌ | **AI vs Fixed-Timer** |
-| Backend API | ❌ | **FastAPI REST** |
-| Deployment | Single container | **Docker Compose** |
+| Feature            | v1                 | v2                       |
+| ------------------ | ------------------ | ------------------------ |
+| RL Algorithm       | Q-Learning only    | Q-Learning + **DQN**     |
+| State space        | 256 discrete       | Continuous (DQN)         |
+| Vehicle types      | Cars only          | Car, bike, bus, truck    |
+| Weather            | ❌                 | ☀️ 🌧️ 🌫️ ⛈️              |
+| Time patterns      | ❌                 | 24-hour rush hour curves |
+| Emergency vehicles | ❌                 | ✅ Random events         |
+| Training chart     | Post-training only | **Live real-time**       |
+| Intersection       | Static matplotlib  | **Animated JS canvas**   |
+| Comparison         | ❌                 | **AI vs Fixed-Timer**    |
+| Backend API        | ❌                 | **FastAPI REST**         |
+| Deployment         | Single container   | **Docker Compose**       |
 
 ---
 
@@ -78,6 +90,7 @@ traffic-rl-v2/
 ## 🧠 RL Details
 
 ### Q-Learning
+
 ```
 State  : (n_bin, s_bin, e_bin, w_bin) → 256 discrete states
 Action : 0 = NS Green, 1 = EW Green
@@ -87,6 +100,7 @@ Policy : ε-greedy with exponential decay
 ```
 
 ### DQN
+
 ```
 State  : raw [N, S, E, W] vehicle counts (continuous, normalised)
 Network: Linear(4→128) → ReLU → Linear(128→64) → ReLU → Linear(64→2)
@@ -97,26 +111,29 @@ Target : Hard update every 200 steps
 ```
 
 ### Vehicle Types
+
 | Type  | Clear Rate | Weight | Emission | Prob |
-|-------|-----------|--------|----------|------|
-| Car   | 65%       | 1.0×   | 1.0      | 55%  |
-| Bike  | 85%       | 0.3×   | 0.2      | 20%  |
-| Bus   | 40%       | 3.0×   | 4.0      | 10%  |
-| Truck | 35%       | 2.5×   | 5.0      | 15%  |
+| ----- | ---------- | ------ | -------- | ---- |
+| Car   | 65%        | 1.0×   | 1.0      | 55%  |
+| Bike  | 85%        | 0.3×   | 0.2      | 20%  |
+| Bus   | 40%        | 3.0×   | 4.0      | 10%  |
+| Truck | 35%        | 2.5×   | 5.0      | 15%  |
 
 ### Weather
+
 | Condition | Clear Multiplier | Arrival Multiplier |
-|-----------|-----------------|-------------------|
-| ☀️ Clear  | 1.00            | 1.00              |
-| 🌧️ Rain  | 0.70            | 1.20              |
-| 🌫️ Fog  | 0.60            | 0.90              |
-| ⛈️ Storm | 0.40            | 1.50              |
+| --------- | ---------------- | ------------------ |
+| ☀️ Clear  | 1.00             | 1.00               |
+| 🌧️ Rain   | 0.70             | 1.20               |
+| 🌫️ Fog    | 0.60             | 0.90               |
+| ⛈️ Storm  | 0.40             | 1.50               |
 
 ---
 
 ## 🚀 Run Instructions
 
 ### Option A — Docker Compose (Recommended)
+
 ```bash
 cd traffic-rl-v2
 
@@ -131,6 +148,7 @@ docker-compose up
 ```
 
 ### Option B — Local Python
+
 ```bash
 pip install -r requirements.txt
 # For DQN support:
@@ -169,11 +187,11 @@ Auto-generated docs: **http://localhost:8000/docs**
 
 ## 📊 Difficulty Levels
 
-| Level  | Arrival λ | Max Vehicles | Notes                    |
-|--------|-----------|--------------|--------------------------|
-| Easy   | 0.3/step  | 10           | Light traffic            |
-| Medium | 0.6/step  | 15           | Realistic city traffic   |
-| Hard   | 1.0/step  | 20           | Rush hour + weather      |
+| Level  | Arrival λ | Max Vehicles | Notes                  |
+| ------ | --------- | ------------ | ---------------------- |
+| Easy   | 0.3/step  | 10           | Light traffic          |
+| Medium | 0.6/step  | 15           | Realistic city traffic |
+| Hard   | 1.0/step  | 20           | Rush hour + weather    |
 
 ---
 
@@ -196,6 +214,7 @@ docker-compose down
 ## 🔧 DQN Installation
 
 PyTorch is optional. Install separately:
+
 ```bash
 # CPU only
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
@@ -206,4 +225,21 @@ pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
 
 ---
 
-Built with ❤️ — Traffic RL v2
+# Built with ❤️ — Traffic RL v2
+
+---
+
+title: Traffic Ai
+emoji: 🏃
+colorFrom: yellow
+colorTo: indigo
+sdk: docker
+pinned: false
+license: mit
+short_description: RL-based Traffic Control Environment using OpenEnv
+
+---
+
+Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
+
+> > > > > > > 91349a586ecf72c1e2561d125a0f5231eb6d024f
