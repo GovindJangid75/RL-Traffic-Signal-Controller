@@ -80,16 +80,16 @@ agent:
 tasks:
   - id: task_easy_efficiency
     description: Clear traffic efficiently under light load conditions.
-    score: 0.8
-    grader:
-      type: match
+    score: 0.3
+    graders:
+      - type: match
   - id: task_medium_emissions
     description: Maintain low emissions during daytime traffic.
-    score: 0.5
-    grader:
-      type: threshold
+    score: 0.3
+    graders:
+      - type: threshold
   - id: task_hard_emergency
     description: Handle emergency vehicles without causing heavy delays.
-    score: 0.9
-    grader:
-      type: match
+    score: 0.4
+    graders:
+      - type: match
