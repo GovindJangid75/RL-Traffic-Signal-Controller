@@ -66,6 +66,34 @@ _state: Dict[str, Any] = {
 _lock = threading.Lock()
 
 
+# ── Auto-load pre-trained Q-table at startup ───────────────────────────────────
+def _try_load_pretrained():
+    """If q_table.npy exists next to this file (or in the project root),
+    load it so /reset works immediately without callers having to /train first."""
+    root = os.path.dirname(os.path.dirname(__file__))
+    q_path = os.path.join(root, "q_table.npy")
+    if not os.path.exists(q_path):
+        return
+    try:
+        # Create a default env just to get the space sizes
+        default_env = TrafficEnv()
+        agent = QLearningAgent(
+            state_space_size  = default_env.state_space_size,
+            action_space_size = default_env.action_space_size,
+        )
+        agent.load_q_table(q_path)
+        agent.epsilon = agent.epsilon_end  # fully greedy for inference
+        with _lock:
+            _state["agent"] = agent
+            _state["env"]   = default_env
+        print(f"[startup] Loaded pre-trained Q-table from {q_path}")
+    except Exception as exc:
+        print(f"[startup] Could not load q_table.npy: {exc}")
+
+
+_try_load_pretrained()
+
+
 # ── Request/Response models ───────────────────────────────────────────────────
 class TrainRequest(BaseModel):
     difficulty     : str   = "Medium"
@@ -287,8 +315,36 @@ def sim_history():
 
 @app.post("/reset")
 def openenv_reset():
-    # call existing function
-    return sim_reset(SimResetRequest())
+    """OpenEnv /reset — works even before /train by auto-initialising a default agent."""
+    with _lock:
+        # Initialise agent from disk if not already loaded
+        if _state["agent"] is None:
+            root   = os.path.dirname(os.path.dirname(__file__))
+            q_path = os.path.join(root, "q_table.npy")
+            default_env = TrafficEnv()
+            agent = QLearningAgent(
+                state_space_size  = default_env.state_space_size,
+                action_space_size = default_env.action_space_size,
+            )
+            if os.path.exists(q_path):
+                agent.load_q_table(q_path)
+                agent.epsilon = agent.epsilon_end  # fully greedy
+            _state["agent"] = agent
+
+        # (Re-)create the environment
+        _state["env"] = TrafficEnv()
+        state = _state["env"].reset()
+        _state.update({
+            "sim_state"  : state,
+            "sim_step"   : 0,
+            "sim_done"   : False,
+            "sim_rewards": [],
+            "sim_cleared": [],
+            "sim_actions": [],
+            "sim_history": [],
+            "last_info"  : {},
+        })
+    return {"message": "Simulation reset", "state": list(state)}
 
 
 @app.post("/step")
