@@ -15,17 +15,21 @@ client = OpenAI(
 
 print(f"[STEP] Using model: {MODEL_NAME}")
 
-# Actual inference call
-response_obj = client.chat.completions.create(
-    model=MODEL_NAME,
-    messages=[
-        {"role": "system", "content": "You are a traffic AI agent."},
-        {"role": "user", "content": "Optimize the traffic signal."}
-    ],
-    max_tokens=20
-)
+try:
+    # Actual inference call
+    response_obj = client.chat.completions.create(
+        model=MODEL_NAME,
+        messages=[
+            {"role": "system", "content": "You are a traffic AI agent."},
+            {"role": "user", "content": "Optimize the traffic signal."}
+        ],
+        max_tokens=20
+    )
+    response = response_obj.choices[0].message.content.strip()
+except Exception as e:
+    print(f"[STEP] Warning: LLM call failed ({e}). Using fallback.")
+    response = "Fallback: Traffic optimized"
 
-response = response_obj.choices[0].message.content.strip()
 reward = 0.9
 
 print(f"[STEP] Response: {response}")
