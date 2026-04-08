@@ -14,7 +14,7 @@ Endpoints:
   GET  /health          — health check
 
 Run:
-    uvicorn api.server:app --host 0.0.0.0 --port 8000 --reload
+    uvicorn api.server:app --host 0.0.0.0 --port 7860 --reload
 """
 
 import sys
