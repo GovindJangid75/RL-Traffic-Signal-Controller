@@ -281,3 +281,21 @@ def sim_history():
             "cleared"   : _state["sim_cleared"],
             "actions"   : _state["sim_actions"],
         }
+
+
+# ── OpenEnv Compatible Endpoints ─────────────────────────────
+
+@app.post("/reset")
+def openenv_reset():
+    # call existing function
+    return sim_reset(SimResetRequest())
+
+
+@app.post("/step")
+def openenv_step():
+    return sim_step()
+
+
+@app.get("/state")
+def openenv_state():
+    return sim_state()

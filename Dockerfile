@@ -18,5 +18,4 @@ RUN mkdir -p /root/.streamlit && \
     > /root/.streamlit/config.toml
 
 EXPOSE 7860
-
-CMD ["streamlit", "run", "app.py", "--server.port=7860", "--server.address=0.0.0.0"]
+CMD ["uvicorn", "api.server:app", "--host", "0.0.0.0", "--port", "7860"]
