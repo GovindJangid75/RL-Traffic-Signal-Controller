@@ -153,6 +153,21 @@ def _train_background(req: TrainRequest):
 
 # ── Endpoints ─────────────────────────────────────────────────────────────────
 
+@app.get("/")
+def root():
+    return {
+        "name"   : "🚦 Traffic RL API",
+        "version": "2.0.0",
+        "status" : "running",
+        "docs"   : "/docs",
+        "openenv": {
+            "reset": "POST /reset",
+            "step" : "POST /step",
+            "state": "GET  /state",
+        },
+    }
+
+
 @app.get("/health")
 def health():
     return {"status": "ok", "version": "2.0.0"}
