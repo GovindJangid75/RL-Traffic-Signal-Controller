@@ -8,24 +8,26 @@ version = "2.0.0"
 description = "RL-based Traffic Signal Control Environment using OpenEnv"
 readme = "README.md"
 license = { text = "MIT" }
-requires-python = ">=3.10"
+requires-python = ">=3.10,<3.13"
 dependencies = [
     "numpy>=1.26.4",
     "fastapi>=0.111.0",
     "uvicorn[standard]>=0.30.1",
     "pydantic>=2.8.0",
     "openai",
+    "openenv-core>=0.2.0,<=0.2.3",
 ]
 
 [project.optional-dependencies]
 dashboard = ["streamlit>=1.37.0", "matplotlib>=3.9.0"]
 
 [project.scripts]
-train = "train:main"
+server = "server.app:app"
+train  = "train:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["env*", "agent*", "api*"]
+include = ["env*", "agent*", "api*", "server*"]
 
 [project.entry-points."openenv.environments"]
 traffic-ai = "env.traffic_env:TrafficEnv"
