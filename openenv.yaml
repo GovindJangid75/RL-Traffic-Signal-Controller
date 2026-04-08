@@ -75,3 +75,21 @@ agent:
   state_space_size: 256
   action_space_size: 2
   saved_model: q_table.npy
+
+# ── Tasks & Graders ──────────────────────────────────────────────────────────
+tasks:
+  - id: task_easy_efficiency
+    description: Clear traffic efficiently under light load conditions.
+    grader:
+      type: match
+      score: 0.8
+  - id: task_medium_emissions
+    description: Maintain low emissions during daytime traffic.
+    grader:
+      type: threshold
+      score: 0.5
+  - id: task_hard_emergency
+    description: Handle emergency vehicles without causing heavy delays.
+    grader:
+      type: match
+      score: 0.9
