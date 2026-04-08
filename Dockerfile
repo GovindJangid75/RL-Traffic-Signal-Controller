@@ -12,6 +12,9 @@ RUN pip install --no-cache-dir --upgrade pip \
 
 COPY . .
 
+# Pre-train a small Q-table at build time so /reset works without calling /train first
+RUN python train.py --agent qlearn --difficulty Medium --episodes 50 --steps 50
+
 # Streamlit config
 RUN mkdir -p /root/.streamlit && \
     printf '[server]\nheadless = true\nport = 7860\nenableCORS = false\n' \

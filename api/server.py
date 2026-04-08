@@ -327,8 +327,11 @@ def openenv_reset():
                 action_space_size = default_env.action_space_size,
             )
             if os.path.exists(q_path):
-                agent.load_q_table(q_path)
-                agent.epsilon = agent.epsilon_end  # fully greedy
+                try:
+                    agent.load_q_table(q_path)
+                    agent.epsilon = agent.epsilon_end  # fully greedy
+                except Exception as e:
+                    print(f"[reset] q_table.npy load failed ({e}), using fresh agent")
             _state["agent"] = agent
 
         # (Re-)create the environment
