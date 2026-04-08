@@ -22,7 +22,7 @@ dependencies = [
 dashboard = ["streamlit>=1.37.0", "matplotlib>=3.9.0"]
 
 [project.scripts]
-server = "server.app:app"
+server = "server.app:main"
 train  = "train:main"
 
 [tool.setuptools.packages.find]

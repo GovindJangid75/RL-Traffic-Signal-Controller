@@ -1,7 +1,6 @@
 """
 server/app.py — OpenEnv multi-mode deployment entry point.
-Re-exports the FastAPI app from api/server.py so the OpenEnv
-validator can locate and launch the server via this standard path.
+The validator requires a callable main() function with if __name__ == '__main__'.
 """
 
 import sys
@@ -11,5 +10,18 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from api.server import app  # noqa: F401 — re-exported for openenv runner
+import uvicorn
 
-__all__ = ["app"]
+
+def main():
+    """Start the FastAPI server — called by the OpenEnv runner."""
+    uvicorn.run(
+        "api.server:app",
+        host="0.0.0.0",
+        port=int(os.getenv("PORT", 7860)),
+        reload=False,
+    )
+
+
+if __name__ == "__main__":
+    main()
