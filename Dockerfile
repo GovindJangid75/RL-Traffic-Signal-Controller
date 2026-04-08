@@ -1,7 +1,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# Traffic RL v2 — Multi-stage Dockerfile
-# Stages: base → app | api
+# Traffic RL v2 — Multi-stage Dockerfile (HF Compatible)
 # ─────────────────────────────────────────────────────────────────────────────
+
 FROM python:3.11-slim AS base
 
 LABEL maintainer="Traffic RL Team"
@@ -13,30 +13,33 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
+# Install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip \
  && pip install --no-cache-dir -r requirements.txt
 
+# Copy project
 COPY . .
 RUN touch env/__init__.py agent/__init__.py api/__init__.py
 
-# ── Streamlit target ──────────────────────────────────────────────────────────
+# ── Streamlit App (MAIN for HF) ───────────────────────────────────────────────
 FROM base AS app
 
 RUN mkdir -p /root/.streamlit && \
     printf '[general]\nemail = ""\n' > /root/.streamlit/credentials.toml && \
-    printf '[server]\nheadless = true\nport = 8501\nenableCORS = false\n\n[browser]\ngatherUsageStats = false\n' \
+    printf '[server]\nheadless = true\nport = 7860\nenableCORS = false\n\n[browser]\ngatherUsageStats = false\n' \
            > /root/.streamlit/config.toml
 
-EXPOSE 8501
+# IMPORTANT: HF uses port 7860
+EXPOSE 7860
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
-    CMD curl -f http://localhost:8501/_stcore/health || exit 1
+    CMD curl -f http://localhost:7860/_stcore/health || exit 1
 
 ENTRYPOINT ["streamlit", "run", "app.py", \
-            "--server.port=8501", "--server.address=0.0.0.0"]
+            "--server.port=7860", "--server.address=0.0.0.0"]
 
-# ── FastAPI target ────────────────────────────────────────────────────────────
+# ── FastAPI (optional, not used by HF UI) ─────────────────────────────────────
 FROM base AS api
 
 EXPOSE 8000
