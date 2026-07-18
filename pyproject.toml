@@ -1,6 +1,6 @@
 [build-system]
 requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.backends.legacy:build"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "traffic-ai"
@@ -9,6 +9,7 @@ description = "RL-based Traffic Signal Control Environment using OpenEnv"
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.10,<3.13"
+
 dependencies = [
     "numpy>=1.26.4",
     "fastapi>=0.111.0",
@@ -19,15 +20,23 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dashboard = ["streamlit>=1.37.0", "matplotlib>=3.9.0"]
+dashboard = [
+    "streamlit>=1.37.0",
+    "matplotlib>=3.9.0"
+]
 
 [project.scripts]
 server = "server.app:main"
-train  = "train:main"
+train = "train:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["env*", "agent*", "api*", "server*"]
+include = [
+    "env*",
+    "agent*",
+    "api*",
+    "server*"
+]
 
 [project.entry-points."openenv.environments"]
 traffic-ai = "env.traffic_env:TrafficEnv"
