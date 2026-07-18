@@ -17,6 +17,8 @@ dependencies = [
     "pydantic>=2.8.0",
     "openai",
     "openenv-core>=0.2.0,<=0.2.3",
+    "streamlit>=1.37.0",
+    "matplotlib>=3.9.0",
 ]
 
 [project.optional-dependencies]
