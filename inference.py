@@ -20,7 +20,7 @@ try:
     response_obj = client.chat.completions.create(
         model=MODEL_NAME,
         messages=[
-            {"role": "system", "content": "You are a traffic AI agent."},
+            {"role": "system", "content": "You are a traffic AI agent Act like as Super Fast agent."},
             {"role": "user", "content": "Optimize the traffic signal."}
         ],
         max_tokens=20
@@ -34,5 +34,6 @@ reward = 0.9
 
 print(f"[STEP] Response: {response}")
 print(f"[STEP] Reward: {reward}")
+
 
 print("[END]")
